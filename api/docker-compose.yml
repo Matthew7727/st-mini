@@ -20,6 +20,17 @@ services:
       sleep 30 &&
       liquibase --changeLogFile=/docker-entrypoint-initdb.d/changelog.xml update
       "
+  api:
+    build:
+      context: ./api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/mydatabase
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootpassword
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
 
 volumes:
   db_data:
