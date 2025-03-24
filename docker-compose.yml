@@ -13,6 +13,13 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+      - ./changelog.xml:/docker-entrypoint-initdb.d/changelog.xml
+    command: >
+      bash -c "
+      docker-entrypoint.sh mysqld &
+      sleep 30 &&
+      liquibase --changeLogFile=/docker-entrypoint-initdb.d/changelog.xml update
+      "
 
 volumes:
   db_data:
