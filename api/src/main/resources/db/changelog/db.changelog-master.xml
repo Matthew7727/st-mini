@@ -4,5 +4,65 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <include file="db/changelog/db.changelog-1.0.xml"/>
+    <changeSet id="1" author="matt">
+        <createTable tableName="organisations">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="matt">
+        <createTable tableName="sectors">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="organisation_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="sectors"
+                                 baseColumnNames="organisation_id"
+                                 referencedTableName="organisations"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="3" author="matt">
+        <createTable tableName="products">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="matt">
+        <createTable tableName="product_sectors">
+            <column name="product_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sector_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="product_sectors"
+                                 baseColumnNames="product_id"
+                                 referencedTableName="products"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="product_sectors"
+                                 baseColumnNames="sector_id"
+                                 referencedTableName="sectors"
+                                 referencedColumnNames="id"/>
+    </changeSet>
 </databaseChangeLog>

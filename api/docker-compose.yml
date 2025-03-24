@@ -2,8 +2,7 @@ version: '3.8'
 
 services:
   db:
-    build: .
-    container_name: mysql_container
+    image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: mydatabase
@@ -13,24 +12,8 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./changelog.xml:/docker-entrypoint-initdb.d/changelog.xml
-    command: >
-      bash -c "
-      docker-entrypoint.sh mysqld &
-      sleep 30 &&
-      liquibase --changeLogFile=/docker-entrypoint-initdb.d/changelog.xml update
-      "
-  api:
-    build:
-      context: ./api
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/mydatabase
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: rootpassword
-    depends_on:
-      - db
-    ports:
-      - "8080:8080"
 
 volumes:
   db_data:
+
+
